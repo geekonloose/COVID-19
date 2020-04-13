@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 
+plt.close('all')
+
 
 def doubling_plot(no_of_days, start, threshold, doubling_days):
     x = [i for i in range(start, no_of_days, doubling_days)]
@@ -12,7 +14,7 @@ def doubling_plot(no_of_days, start, threshold, doubling_days):
         if i % doubling_days == 0 and i != 0:
             y.append(2 * y[k-1])
         k += 1
-    # plt.figure()
+    # fig, ax = plt.subplots(figsize=(8, 6))
     plt.semilogy(x, y, ls='--', color='grey')
     plt.annotate(f'every {doubling_days} days',
                  (no_of_days/2, y[int(len(y)/2)]), fontsize=8)
@@ -163,7 +165,7 @@ plt.show()
 plt.savefig('recovered', dpi=500)
 
 # confirmed
-plt.figure(figsize=(8, 6))
+figure, ax = plt.subplots(figsize=(8, 6))
 k = 0
 for i in list_countries:
     plt.plot(first_confirmed_dict[i], label=i, color=color_list[k])
@@ -181,6 +183,7 @@ doubling_plot(no_of_days, 0, threshold_confirmed, 7)
 plt.xlim((0, no_of_days))
 plt.ylim((threshold_confirmed, 1e6))
 plt.yscale('log')
+ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
 plt.figtext(0.01, 0.01, f'By Parth Patel (data from {dates[0]:} to {dates[-1]}) \nData source: https://github.com/CSSEGISandData/COVID-19',
             horizontalalignment='left', fontsize=7, color='grey')
@@ -191,3 +194,85 @@ plt.grid(which='major', axis='both')
 plt.tight_layout()
 plt.show()
 plt.savefig('confirmed', dpi=500)
+
+# rise confirmed
+fig, ax = plt.subplots(figsize=(8, 6))
+k = 0
+for i in list_countries:
+    rise_day_by_day = np.diff(first_confirmed_dict[i])
+    plt.plot(rise_day_by_day, color=color_list[k], label=i)
+    plt.annotate(i, (len(rise_day_by_day)-1, rise_day_by_day
+                     [-1]+0.05*rise_day_by_day[-1]), color=color_list[k], fontsize=8)
+    plt.ylabel('Confirmed', fontsize=12)
+    plt.xlabel(
+        f'No of days since >= {threshold_confirmed} confirmed', fontsize=12)
+    k += 1
+plt.xlim((0, no_of_days))
+plt.ylim((threshold_confirmed, 5e3))
+plt.yscale('log')
+ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
+# plt.legend()
+plt.figtext(0.01, 0.01, f'By Parth Patel (data from {dates[0]:} to {dates[-1]}) \nData source: https://github.com/CSSEGISandData/COVID-19',
+            horizontalalignment='left', fontsize=7, color='grey')
+plt.minorticks_on()
+plt.grid(which='major', axis='both')
+# plt.grid(which='minor', axis='both')
+
+plt.tight_layout()
+plt.show()
+plt.savefig('rise_confirmed', dpi=500)
+
+# rise recovered
+threshold_recovered = 1
+fig, ax = plt.subplots(figsize=(8, 6))
+k = 0
+for i in list_countries:
+    rise_day_by_day = np.diff(first_recovered_dict[i])
+    plt.plot(rise_day_by_day, color=color_list[k], label=i)
+    plt.annotate(i, (len(rise_day_by_day)-1, rise_day_by_day
+                     [-1]+0.05*rise_day_by_day[-1]), color=color_list[k], fontsize=8)
+    plt.ylabel('Recovered', fontsize=12)
+    plt.xlabel(
+        f'No of days since >= {threshold_recovered} recovered', fontsize=12)
+    k += 1
+plt.xlim((0, no_of_days))
+plt.ylim((threshold_recovered, 9e3))
+plt.yscale('log')
+ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
+# plt.legend()
+plt.figtext(0.01, 0.01, f'By Parth Patel (data from {dates[0]:} to {dates[-1]}) \nData source: https://github.com/CSSEGISandData/COVID-19',
+            horizontalalignment='left', fontsize=7, color='grey')
+plt.minorticks_on()
+plt.grid(which='major', axis='both')
+# plt.grid(which='minor', axis='both')
+
+plt.tight_layout()
+plt.show()
+plt.savefig('rise_recovered', dpi=500)
+
+# rise_death
+fig, ax = plt.subplots(figsize=(8, 6))
+k = 0
+for i in list_countries:
+    rise_day_by_day = np.diff(first_death_dict[i])
+    plt.plot(rise_day_by_day, color=color_list[k], label=i)
+    plt.annotate(i, (len(rise_day_by_day)-1, rise_day_by_day
+                     [-1]+0.05*rise_day_by_day[-1]), color=color_list[k], fontsize=8)
+    plt.ylabel('Death', fontsize=12)
+    plt.xlabel(
+        f'No of days since >= {threshold_death} death', fontsize=12)
+    k += 1
+plt.xlim((0, no_of_days))
+plt.ylim((threshold_death, 3e3))
+plt.yscale('log')
+ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
+# plt.legend()
+plt.figtext(0.01, 0.01, f'By Parth Patel (data from {dates[0]:} to {dates[-1]}) \nData source: https://github.com/CSSEGISandData/COVID-19',
+            horizontalalignment='left', fontsize=7, color='grey')
+plt.minorticks_on()
+plt.grid(which='major', axis='both')
+# plt.grid(which='minor', axis='both')
+
+plt.tight_layout()
+plt.show()
+plt.savefig('rise_death', dpi=500)
