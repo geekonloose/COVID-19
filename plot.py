@@ -203,12 +203,12 @@ for i in list_countries:
     plt.plot(rise_day_by_day, color=color_list[k], label=i)
     plt.annotate(i, (len(rise_day_by_day)-1, rise_day_by_day
                      [-1]+0.05*rise_day_by_day[-1]), color=color_list[k], fontsize=8)
-    plt.ylabel('Confirmed', fontsize=12)
+    plt.ylabel('each day confirmed cases reported', fontsize=12)
     plt.xlabel(
         f'No of days since >= {threshold_confirmed} confirmed', fontsize=12)
     k += 1
 plt.xlim((0, no_of_days))
-plt.ylim((threshold_confirmed, 5e3))
+plt.ylim((threshold_confirmed, 1e5))
 plt.yscale('log')
 ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
@@ -219,8 +219,8 @@ plt.grid(which='major', axis='both')
 # plt.grid(which='minor', axis='both')
 
 plt.tight_layout()
-plt.show()
 plt.savefig('rise_confirmed', dpi=500)
+plt.show()
 
 # rise recovered
 threshold_recovered = 1
@@ -231,7 +231,7 @@ for i in list_countries:
     plt.plot(rise_day_by_day, color=color_list[k], label=i)
     plt.annotate(i, (len(rise_day_by_day)-1, rise_day_by_day
                      [-1]+0.05*rise_day_by_day[-1]), color=color_list[k], fontsize=8)
-    plt.ylabel('Recovered', fontsize=12)
+    plt.ylabel('each day recovered reported', fontsize=12)
     plt.xlabel(
         f'No of days since >= {threshold_recovered} recovered', fontsize=12)
     k += 1
@@ -258,7 +258,7 @@ for i in list_countries:
     plt.plot(rise_day_by_day, color=color_list[k], label=i)
     plt.annotate(i, (len(rise_day_by_day)-1, rise_day_by_day
                      [-1]+0.05*rise_day_by_day[-1]), color=color_list[k], fontsize=8)
-    plt.ylabel('Death', fontsize=12)
+    plt.ylabel('each day deaths reported', fontsize=12)
     plt.xlabel(
         f'No of days since >= {threshold_death} death', fontsize=12)
     k += 1
