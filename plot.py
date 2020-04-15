@@ -110,7 +110,7 @@ color_list = ['#ef253c', '#05d69e', '#ffbe0a', 'black',
               '#1ae8ff',  '#6495ed', '#a4bd00', 'blue', '#8236ec', '#a33e48']
 
 # death
-plt.figure(figsize=(8, 6))
+figure, ax = plt.subplots(figsize=(8, 6))
 k = 0
 for i in list_countries:
     plt.plot(first_death_dict[i], label=i, color=color_list[k])
@@ -126,6 +126,7 @@ doubling_plot(no_of_days, 0, threshold_death, 7)
 plt.xlim((0, 80))
 plt.ylim((threshold_death, 5e4))
 plt.yscale('log')
+ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
 plt.figtext(0.01, 0.01, f'By Parth Patel (data from {dates[0]:} to {dates[-1]}) \nData source: https://github.com/CSSEGISandData/COVID-19',
             horizontalalignment='left', fontsize=8, color='grey')
@@ -136,7 +137,7 @@ plt.show()
 plt.savefig('Death', dpi=500)
 
 # recovery
-plt.figure(figsize=(8, 6))
+figure, ax = plt.subplots(figsize=(8, 6))
 k = 0
 for i in list_countries:
     plt.plot(first_recovered_dict[i], label=i, color=color_list[k])
@@ -153,6 +154,7 @@ doubling_plot(no_of_days, 0, threshold_recovered, 7)
 plt.xlim((0, no_of_days))
 plt.ylim((threshold_recovered, 9e4))
 plt.yscale('log')
+ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
 plt.figtext(0.01, 0.01, f'By Parth Patel (data from {dates[0]:} to {dates[-1]}) \nData source: https://github.com/CSSEGISandData/COVID-19',
             horizontalalignment='left', fontsize=7, color='grey')
