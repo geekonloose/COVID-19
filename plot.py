@@ -87,9 +87,9 @@ for i in countries:
     first_death_dict[i] = []
     first_recovered_dict[i] = []
 
-threshold_confirmed = 100
-threshold_death = 10
-threshold_recovered = 10
+threshold_confirmed = 20000
+threshold_death = 200
+threshold_recovered = 1000
 no_of_days = 90
 for i in countries:
     for j in confirmed_dict[i]:
@@ -105,9 +105,9 @@ for i in countries:
             first_death_dict[i].append(j)
 
 list_countries = ['Italy', 'India', 'Spain', 'China',
-                  'France', 'United Kingdom', 'Iran', 'US', 'Japan', 'Korea, South']
+                  'France', 'Iran', 'US', 'Germany']
 color_list = ['#ef253c', '#05d69e', '#ffbe0a', 'black',
-              '#1ae8ff',  '#6495ed', '#a4bd00', 'blue', '#8236ec', '#a33e48']
+              '#1ae8ff',  '#6495ed', '#a4bd00', 'blue', '#8236ec', '#a33e48', '#ff8a5c', '#ef486f']
 
 # death
 figure, ax = plt.subplots(figsize=(8, 6))
@@ -182,8 +182,9 @@ for i in list_countries:
 doubling_plot(no_of_days, 0, threshold_confirmed, 3)
 doubling_plot(no_of_days, 0, threshold_confirmed, 5)
 doubling_plot(no_of_days, 0, threshold_confirmed, 7)
+doubling_plot(no_of_days, 0, threshold_confirmed, 9)
 plt.xlim((0, no_of_days))
-plt.ylim((threshold_confirmed, 1e6))
+plt.ylim((threshold_confirmed, 1.5e6))
 plt.yscale('log')
 ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
@@ -197,11 +198,18 @@ plt.tight_layout()
 plt.show()
 plt.savefig('confirmed', dpi=500)
 
+
+threshold_confirmed = 10
+threshold_death = 10
+threshold_recovered = 10
+no_of_days = 200
 # rise confirmed
 fig, ax = plt.subplots(figsize=(8, 6))
 k = 0
 for i in list_countries:
-    rise_day_by_day = np.diff(first_confirmed_dict[i])
+    rise_day_by_day = np.convolve(
+        np.diff(first_confirmed_dict[i]), np.ones(7,)/7)[:-7]
+    # plt.plot(rise_day_by_day, color=color_list[k], label=i)
     plt.plot(rise_day_by_day, color=color_list[k], label=i)
     plt.annotate(i, (len(rise_day_by_day)-1, rise_day_by_day
                      [-1]+0.05*rise_day_by_day[-1]), color=color_list[k], fontsize=8)
@@ -210,7 +218,7 @@ for i in list_countries:
         f'No of days since >= {threshold_confirmed} confirmed', fontsize=12)
     k += 1
 plt.xlim((0, no_of_days))
-plt.ylim((threshold_confirmed, 1e5))
+plt.ylim(bottom=threshold_confirmed)
 plt.yscale('log')
 ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
@@ -274,6 +282,7 @@ plt.figtext(0.01, 0.01, f'By Parth Patel (data from {dates[0]:} to {dates[-1]}) 
 plt.minorticks_on()
 plt.grid(which='major', axis='both')
 # plt.grid(which='minor', axis='both')
+# np.convolve(x, np.ones((N,))/N, mode='valid')
 
 plt.tight_layout()
 plt.show()

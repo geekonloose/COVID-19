@@ -6,7 +6,7 @@ dict_recovered_daily = {}
 dict_death_daily = {}
 # TT,AN,AP,AR,AS,BR,CH,CT,DD,DL,DN,GA,GJ,HP,HR,JH,JK,KA,KL,LA,LD,MH,ML,MN,MP,MZ,NL,OR,PB,PY,RJ,SK,TG,TN,TR,UP,UT,WB,
 list_state = ['Total', "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Div & Daman", "Delhi", "DADRA AND NAGAR HAVELI", "Goa", "Gujarat",  "Himachal Pradesh", "Haryana", "Jharkhand", "Jammu and Kashmir",
-              "Karnataka", "Kerala", "Lakshadweep", "Ladakh", "Maharashtra", "Meghalaya", "Manipur", "Madhya Pradesh", "Mizoram", "Nagaland", "Odisha", "Punjab", "Puducherry", "Rajasthan", "Telangana", "Tamilnadu", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"]
+              "Karnataka", "Kerala", "Lakshadweep", "Ladakh", "Maharashtra", "Meghalaya", "Manipur", "Madhya Pradesh", "Mizoram", "Nagaland", "Odisha", "Punjab", "Puducherry", "Rajasthan", "Sikkim", "Telangana", "Tamilnadu", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"]
 
 
 for i in list_state:
@@ -97,9 +97,9 @@ for i in list_state:
     first_death_dict[i] = []
     first_recovered_dict[i] = []
 
-threshold_confirmed = 100
-threshold_death = 2
-threshold_recovered = 10
+threshold_confirmed = 1000
+threshold_death = 10
+threshold_recovered = 100
 no_of_days = 35
 for i in list_state:
     for j in dict_confirmed_cumulative[i]:
@@ -115,7 +115,7 @@ for i in list_state:
             first_death_dict[i].append(j)
 
 
-states = ['Gujarat', 'Tamilnadu', 'Kerala',
+states = ['Gujarat', 'Tamilnadu',
           'Maharashtra', 'Madhya Pradesh', 'Delhi']
 color_list = ['#ef253c', '#05d69e', '#ffbe0a', 'black',
               '#1ae8ff',  '#6495ed', '#a4bd00', 'blue', '#8236ec', '#a33e48']
@@ -135,7 +135,7 @@ doubling_plot(no_of_days, 0, threshold_recovered, 3)
 doubling_plot(no_of_days, 0, threshold_recovered, 5)
 doubling_plot(no_of_days, 0, threshold_recovered, 7)
 plt.xlim((0, no_of_days))
-plt.ylim((threshold_recovered, 1e3))
+plt.ylim((threshold_recovered, 5e3))
 plt.yscale('log')
 ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
@@ -164,7 +164,7 @@ doubling_plot(no_of_days, 0, threshold_confirmed, 3)
 doubling_plot(no_of_days, 0, threshold_confirmed, 5)
 doubling_plot(no_of_days, 0, threshold_confirmed, 7)
 plt.xlim((0, no_of_days))
-plt.ylim(bottom=threshold_confirmed)
+plt.ylim(threshold_confirmed, 3e4)
 plt.yscale('log')
 ax.yaxis.set_major_formatter(plt.FormatStrFormatter('%d'))
 # plt.legend()
@@ -182,7 +182,7 @@ plt.savefig('confirmed_state', dpi=500)
 
 
 # death
-figure, ax = plt.subplots(figsize=(8, 6))
+figure, ax = plt.subplots()
 k = 0
 for i in states:
     plt.plot(first_death_dict[i], label=i, color=color_list[k])
